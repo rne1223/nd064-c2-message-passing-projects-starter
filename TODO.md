@@ -13,6 +13,7 @@ To break down the app into microservices by using messaging the learned messagin
 
 ### Project Submission Files Checklist Task List
 [Link](https://classroom.udacity.com/nanodegrees/nd064/parts/14e73fd9-edf1-41f7-9096-c7a36f59c661/modules/e4c97111-b45e-4d30-a05f-0c414c3ffb7c/lessons/e89129c6-7b3e-4235-84f0-1c1f383cec12/concepts/389328c7-c45b-428d-86cc-aae521821300)
+[Rubric](https://review.udacity.com/#!/rubrics/2924/view)
 
 -[] Plan the message passing strategies based on the business requirements for UdaConnect
     -[] Need to use Kafka
