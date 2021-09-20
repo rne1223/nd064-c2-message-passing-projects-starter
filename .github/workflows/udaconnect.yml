@@ -29,7 +29,7 @@ jobs:
         with:
           # list of Docker images to use as base name for tags
           images: |
-            rne1223/nd064-c2-message-passing-projects-starter
+            rne1223/nd064-c2-message-passing-projects-starter/modules/api/
             ghcr.io/rne1223/udaconnect-app
           # generate Docker tags based on the following events/attributes
           tags: |
@@ -65,7 +65,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: .
-          file: ./modules/api/Dockerfile
+          file: ./Dockerfile
           platforms: linux/amd64
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
