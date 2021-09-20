@@ -55,4 +55,5 @@ EXPORT_CONFIGS: List[Type[BaseConfig]] = [
     TestingConfig,
     ProductionConfig,
 ]
+
 config_by_name = {cfg.CONFIG_NAME: cfg for cfg in EXPORT_CONFIGS}
