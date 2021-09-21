@@ -42,13 +42,14 @@ class PersonsResource(Resource):
     @accepts(schema=PersonSchema)
     @responds(schema=PersonSchema)
     def post(self) -> Person:
-        print("hello world")
+        print("hello world POST")
         payload = request.get_json()
         new_person: Person = PersonService.create(payload)
         return new_person
 
     @responds(schema=PersonSchema, many=True)
     def get(self) -> List[Person]:
+        print("hello world GET")
         persons: List[Person] = PersonService.retrieve_all()
         return persons
 
