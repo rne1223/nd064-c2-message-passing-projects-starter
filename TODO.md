@@ -1,8 +1,8 @@
 ## Things that need be done before making changes
 #
 
-- [ ] Create a personal docker image
-- [ ] Setup Github workflow
+- [x] Create a personal docker image
+- [x] Setup Github workflow
 - [ ] Use Helm charts
 
 

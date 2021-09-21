@@ -1,10 +1,9 @@
 FROM python:3.7-alpine
 
-WORKDIR .
-
+WORKDIR ./modules/api
 
 RUN apk add --no-cache gcc musl-dev linux-headers geos libc-dev postgresql-dev
-COPY ./modules/api/requirements.txt requirements.txt
+COPY requirements.txt requirements.txt
 RUN pip install -r requirements.txt
 
 EXPOSE 5000
