@@ -48,9 +48,8 @@ class PersonsResource(Resource):
 
     # @responds(schema=PersonSchema, many=True)
     def get(self) -> List[Person]:
-        # persons: List[Person] = PersonService.retrieve_all()
-        # return persons
-        return "Hello world"
+        persons: List[Person] = PersonService.retrieve_all()
+        return persons
 
 
 @api.route("/persons/<person_id>")
