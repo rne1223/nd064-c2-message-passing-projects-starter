@@ -31,9 +31,9 @@ spec:
         service: udaconnect-api
     spec:
       containers:
-      - image: rne1223/udaconnect-api:master
+      - image: rne1223/udaconnect-api:latest
         name: udaconnect-api
-        imagePullPolicy: Always
+        imagePullPolicy: Always 
         env:
         - name: DB_USERNAME
           valueFrom:

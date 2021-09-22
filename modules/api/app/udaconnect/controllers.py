@@ -42,16 +42,15 @@ class PersonsResource(Resource):
     @accepts(schema=PersonSchema)
     @responds(schema=PersonSchema)
     def post(self) -> Person:
-        print("hello world POST")
         payload = request.get_json()
         new_person: Person = PersonService.create(payload)
         return new_person
 
-    @responds(schema=PersonSchema, many=True)
+    # @responds(schema=PersonSchema, many=True)
     def get(self) -> List[Person]:
-        print("hello world GET")
-        persons: List[Person] = PersonService.retrieve_all()
-        return persons
+        # persons: List[Person] = PersonService.retrieve_all()
+        # return persons
+        return "Hello world"
 
 
 @api.route("/persons/<person_id>")
