@@ -46,7 +46,7 @@ class PersonsResource(Resource):
         new_person: Person = PersonService.create(payload)
         return new_person
 
-    # @responds(schema=PersonSchema, many=True)
+    @responds(schema=PersonSchema, many=True)
     def get(self) -> List[Person]:
         persons: List[Person] = PersonService.retrieve_all()
         return persons
