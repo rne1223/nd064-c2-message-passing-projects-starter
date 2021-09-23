@@ -7,7 +7,7 @@ COPY requirements.txt requirements.txt
 RUN pip install -r requirements.txt
 
 # Installing debugger
-RUN pip install ptvsd
+# RUN pip install ptvsd
 
 EXPOSE 5000
 # ENV FLASK_APP=wsgi.py
