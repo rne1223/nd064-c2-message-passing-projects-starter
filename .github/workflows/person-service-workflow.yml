@@ -29,8 +29,8 @@ jobs:
         with:
           # list of Docker images to use as base name for tags
           images: |
-            rne1223/udaconnect-personService
-            ghcr.io/rne1223/udaconnect-personService
+            rne1223/udaconnect-person-service
+            ghcr.io/rne1223/udaconnect-person-service
           # generate Docker tags based on the following events/attributes
           tags: |
             type=schedule
