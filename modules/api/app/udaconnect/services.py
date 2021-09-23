@@ -1,6 +1,7 @@
 import logging
 from datetime import datetime, timedelta
 from typing import Dict, List
+from flask import g
 import requests
 
 from app import db
@@ -12,6 +13,7 @@ from sqlalchemy.sql import text
 logging.basicConfig(level=logging.WARNING)
 logger = logging.getLogger("udaconnect-api")
 
+g.serviceUrl = "https://udaconnect-person-service:5001/api/persons"
 
 class ConnectionService:
     @staticmethod
@@ -127,12 +129,13 @@ class PersonService:
 
     @staticmethod
     def retrieve(person_id: int) -> Person:
-        person = db.session.query(Person).get(person_id)
+        # Use person-service to retrieve a person by id
+        person = requests.get(f"{g.serviceUrl}/{id}")
+        # person = db.session.query(Person).get(person_id)
         return person
 
     @staticmethod
     def retrieve_all() -> List[Person]:
-        # Make a call to the person-service to retrieve all persons
-        persons = requests.get('https://udaconnect-person-service:5001/api/persons')
+        # Use person-service to retrieve all persons from DB
+        persons: List[Person] = requests.get(f"{g.serviceUlr}")
         return persons
-        # return db.session.query(Person).all()
