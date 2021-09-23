@@ -1,6 +1,7 @@
 import logging
 from datetime import datetime, timedelta
 from typing import Dict, List
+import requests
 
 from app import db
 from app.udaconnect.models import Connection, Location, Person
@@ -131,4 +132,7 @@ class PersonService:
 
     @staticmethod
     def retrieve_all() -> List[Person]:
-        return db.session.query(Person).all()
+        # Make a call to the person-service to retrieve all persons
+        persons = requests.get('https://udaconnect-person-service:5001/api/persons')
+        return persons
+        # return db.session.query(Person).all()
