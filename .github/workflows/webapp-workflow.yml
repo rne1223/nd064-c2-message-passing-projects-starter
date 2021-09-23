@@ -29,8 +29,8 @@ jobs:
         with:
           # list of Docker images to use as base name for tags
           images: |
-            rne1223/udaconnect-app
-            ghcr.io/rne1223/udaconnect-app
+            rne1223/udaconnect-webapp
+            ghcr.io/rne1223/udaconnect-webapp
           # generate Docker tags based on the following events/attributes
           tags: |
             type=schedule
@@ -65,7 +65,7 @@ jobs:
         name: Build and push
         uses: docker/build-push-action@v2
         with:
-          context: ./modules/frontend/
+          context: ./modules/webapp/
           platforms: linux/amd64
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
