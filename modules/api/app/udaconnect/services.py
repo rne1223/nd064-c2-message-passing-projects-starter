@@ -138,7 +138,40 @@ class PersonService:
         # Use person-service to retrieve all persons from DB
         print("hello world")
         logging.info("hello world lkajsdf;lksadj ")
-        persons = requests.get("http://udaconnect-person-service:5001/api/persons")
+        # persons = requests.get("http://udaconnect-person-service:5001/api/persons")
+
+        persons = [
+        {
+            "company_name": "Alpha Omega Upholstery",
+            "first_name": "Taco",
+            "last_name": "Fargo",
+            "id": 5
+        },
+        {
+            "company_name": "USDA",
+            "first_name": "Frank",
+            "last_name": "Shader",
+            "id": 6
+        },
+        {
+            "company_name": "Hampton, Hampton and McQuill",
+            "first_name": "Pam",
+            "last_name": "Trexler",
+            "id": 1
+        },
+        {
+            "company_name": "Paul Badman & Associates",
+            "first_name": "Paul",
+            "last_name": "Badman",
+            "id": 8
+        },
+        {
+            "company_name": "The Chicken Sisters Restaurant",
+            "first_name": "Otto",
+            "last_name": "Spring",
+            "id": 9
+        }
+        ]
         # logging.info("Persons return:", persons)
         # return db.session.query(Person).all()
         return persons
