@@ -129,7 +129,7 @@ class PersonService:
     @staticmethod
     def retrieve(person_id: int) -> Person:
         # Use person-service to retrieve a person by id
-        response = requests.get(f"{serviceUrl}/{id}")
+        response = requests.get(f"{serviceUrl}/{person_id}")
         person = response.json()
         return person
 
