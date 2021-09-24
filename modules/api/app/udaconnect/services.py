@@ -138,6 +138,7 @@ class PersonService:
         # Use person-service to retrieve all persons from DB
         persons: List[Person] = requests.get("http://udaconnect-person-service:5001/api/persons")
 
+        print("hello world")
         # logging.info("Persons return:", persons)
         # return db.session.query(Person).all()
         return persons
