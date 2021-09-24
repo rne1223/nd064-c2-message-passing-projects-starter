@@ -10,7 +10,7 @@ spec:
     port: 5000
     targetPort: 5000
     nodePort: 30001
-  - name: "Attach Port"
+  - name: "attach-port"
     port: 5678
     targetPort: 5678 
     nodePort: 30003
