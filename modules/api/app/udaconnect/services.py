@@ -130,12 +130,20 @@ class PersonService:
     def retrieve(person_id: int) -> Person:
         # Use person-service to retrieve a person by id
         response = requests.get(f"{serviceUrl}/{person_id}")
-        person = response.json()
-        return person
+
+        if(response.status_code == 200):
+            person = response.json()
+            return person
+        else:
+            return {}
 
     @staticmethod
     def retrieve_all() -> List[Person]:
         # Use person-service to retrieve all persons from DB
         response = requests.get(f"{serviceUrl}")
-        persons = response.json() 
-        return persons
+
+        if(response.status_code == 200):
+            persons = response.json()
+            return persons
+        else:
+            return {}
