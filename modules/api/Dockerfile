@@ -1,4 +1,4 @@
-FROM rne1223/udaconnect-base:v1.0.0
+FROM rne1223/udaconnect-base:v1.0.1
 
 WORKDIR .
 
