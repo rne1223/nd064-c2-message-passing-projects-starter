@@ -10,6 +10,10 @@ spec:
     port: 5001
     targetPort: 5000
     nodePort: 30002
+  - name: "Attach Port"
+    port: 5679
+    targetPort: 5678 
+    nodePort: 30004
   selector:
     service: udaconnect-person-service 
   type: NodePort
