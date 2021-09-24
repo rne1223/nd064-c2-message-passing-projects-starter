@@ -12,11 +12,8 @@ on:
       - ".github/workflows/base_image_build.yml"
       - "!base_image/README.md"
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
   build:
-    # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
     # Steps represent a sequence of tasks that will be executed as part of the job
@@ -24,25 +21,6 @@ jobs:
       -
         name: Checkout
         uses: actions/checkout@v2
-      -
-        name: Docker meta
-        id: meta
-        uses: docker/metadata-action@v3
-        with:
-          # list of Docker images to use as base name for tags
-          images: |
-            rne1223/udaconnect-base:v1.0.0
-            ghcr.io/rne1223/udaconnect-base:v1.0.0
-          # generate Docker tags based on the following events/attributes
-          tags: |
-            type=schedule
-            type=ref,event=branch
-            type=ref,event=pr
-            type=semver,pattern={{version}}
-            type=semver,pattern={{major}}.{{minor}}
-            type=semver,pattern={{major}}
-            type=sha
-            type=raw,value=latest
       -
         name: Set up QEMU
         uses: docker/setup-qemu-action@v1
@@ -70,5 +48,4 @@ jobs:
           context: ./base_image/
           platforms: linux/amd64
           push: ${{ github.event_name != 'pull_request' }}
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
+          tags: rne1223/udaconnect-base:v1.0.0
