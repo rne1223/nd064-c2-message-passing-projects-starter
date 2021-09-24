@@ -9,6 +9,7 @@ on:
     branches: [ master ]
     paths:
       - "base_image/**"
+      - ".github/workflows/base_image_build.yml"
       - "!base_image/README.md"
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
