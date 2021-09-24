@@ -1,4 +1,5 @@
 from datetime import datetime
+import logging
 
 from app.udaconnect.models import Connection, Location, Person
 from app.udaconnect.schemas import (
@@ -48,6 +49,8 @@ class PersonsResource(Resource):
 
     @responds(schema=PersonSchema, many=True)
     def get(self) -> List[Person]:
+        print("Hello world from person-service")
+        logging("This is from person-service")
         persons: List[Person] = PersonService.retrieve_all()
         return persons
 
