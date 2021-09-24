@@ -28,6 +28,7 @@ shapely==1.7.0
 SQLAlchemy==1.3.19
 Werkzeug==0.16.1
 flask-restx==0.2.0
+grpcio
 
 ## Alpine apk install, mainly use to run postgres containers
 gcc 
