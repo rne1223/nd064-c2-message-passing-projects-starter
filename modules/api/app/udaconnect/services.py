@@ -13,7 +13,7 @@ from sqlalchemy.sql import text
 logging.basicConfig(level=logging.WARNING)
 logger = logging.getLogger("udaconnect-api")
 
-g.serviceUrl = "https://udaconnect-person-service:5001/api/persons"
+serviceUrl = "https://udaconnect-person-service:5001/api/persons"
 
 class ConnectionService:
     @staticmethod
@@ -130,12 +130,12 @@ class PersonService:
     @staticmethod
     def retrieve(person_id: int) -> Person:
         # Use person-service to retrieve a person by id
-        person = requests.get(f"{g.serviceUrl}/{id}")
+        person = requests.get(f"{serviceUrl}/{id}")
         # person = db.session.query(Person).get(person_id)
         return person
 
     @staticmethod
     def retrieve_all() -> List[Person]:
         # Use person-service to retrieve all persons from DB
-        persons: List[Person] = requests.get(f"{g.serviceUlr}")
+        persons: List[Person] = requests.get(f"{serviceUrl}")
         return persons

@@ -44,3 +44,4 @@ To create a pod that you can use as a Kafka client run the following commands:
 
 ### Running Busybox
 kcdebug() { kubectl run -i --rm --tty debug --image=busybox --restart=Never -- sh --namespace $1}
+podName() { kubectl -n $1 get pod | grep $2 | awk '{ print $1 }' }
