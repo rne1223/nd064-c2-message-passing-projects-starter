@@ -129,13 +129,13 @@ class PersonService:
     @staticmethod
     def retrieve(person_id: int) -> Person:
         # Use person-service to retrieve a person by id
-        person = requests.get(f"{serviceUrl}/{id}")
-        # person = db.session.query(Person).get(person_id)
+        response = requests.get(f"{serviceUrl}/{id}")
+        person = response.json()
         return person
 
     @staticmethod
     def retrieve_all() -> List[Person]:
         # Use person-service to retrieve all persons from DB
-        response = requests.get("http://udaconnect-person-service:5001/api/persons")
+        response = requests.get(f"{serviceUrl}")
         persons = response.json() 
         return persons
