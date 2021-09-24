@@ -12,7 +12,7 @@ from sqlalchemy.sql import text
 logging.basicConfig(level=logging.WARNING)
 logger = logging.getLogger("udaconnect-api")
 
-serviceUrl = "https://udaconnect-person-service:5001/api/persons"
+serviceUrl = "http://udaconnect-person-service:5001/api/persons"
 
 class ConnectionService:
     @staticmethod
