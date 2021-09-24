@@ -137,5 +137,5 @@ class PersonService:
     @staticmethod
     def retrieve_all() -> List[Person]:
         # Use person-service to retrieve all persons from DB
-        persons: List[Person] = requests.get("https://udaconnect-person-service:5001/api/persons")
+        persons: List[Person] = requests.get("http://udaconnect-person-service:5001/api/persons")
         return persons
