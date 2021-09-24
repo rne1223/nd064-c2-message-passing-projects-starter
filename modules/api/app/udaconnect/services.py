@@ -1,7 +1,6 @@
 import logging
 from datetime import datetime, timedelta
 from typing import Dict, List
-from flask import g
 import requests
 
 from app import db
@@ -138,4 +137,5 @@ class PersonService:
     def retrieve_all() -> List[Person]:
         # Use person-service to retrieve all persons from DB
         persons = requests.get("http://udaconnect-person-service:5001/api/persons")
+        logging.info("Persons return:", persons)
         return persons

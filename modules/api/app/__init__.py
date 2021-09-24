@@ -3,6 +3,8 @@ from flask_cors import CORS
 from flask_restx import Api
 from flask_sqlalchemy import SQLAlchemy
 
+from datetime import datetime
+
 db = SQLAlchemy()
 
 def create_app(env=None):
@@ -23,3 +25,4 @@ def create_app(env=None):
         return jsonify("healthy")
 
     return app
+
