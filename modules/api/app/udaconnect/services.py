@@ -146,4 +146,4 @@ class PersonService:
             persons = response.json()
             return persons
         else:
-            return {}
+            return [{}]
