@@ -2,6 +2,8 @@ from flask import Flask, jsonify, g
 from flask_cors import CORS
 from flask_restx import Api
 from flask_sqlalchemy import SQLAlchemy
+import logging
+import sys
 # from kafka import KafkaProducer
 
 from datetime import datetime
@@ -9,6 +11,16 @@ from datetime import datetime
 db = SQLAlchemy()
 
 app = Flask(__name__)
+logger = logging.getLogger("__name__")
+logging.basicConfig( level=logging.DEBUG)
+h1 = logging.StreamHandler(sys.stdout)
+h1.setLevel(logging.DEBUG)
+h2 = logging.StreamHandler(sys.stderr)
+h2.setLevel(logging.ERROR)
+logger.addHandler(h1)
+logger.addHandler(h2)
+
+app.logger.info("Testing testing testing")
 
 # @app.before_request
 # def before_request():
