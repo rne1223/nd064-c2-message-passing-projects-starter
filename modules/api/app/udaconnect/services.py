@@ -3,7 +3,9 @@ from datetime import datetime, timedelta
 from typing import Dict, List
 import requests
 
+
 from app import db
+from app.misc import log
 from app.udaconnect.models import Connection, Location, Person
 from app.udaconnect.schemas import ConnectionSchema, LocationSchema, PersonSchema
 from geoalchemy2.functions import ST_AsText, ST_Point
@@ -116,19 +118,12 @@ class LocationService:
 class PersonService:
     @staticmethod
     def create(person: Dict) -> Person:
-        new_person = Person()
-        new_person.first_name = person["first_name"]
-        new_person.last_name = person["last_name"]
-        new_person.company_name = person["company_name"]
-
-        db.session.add(new_person)
-        db.session.commit()
-
         response = requests.post(f"{serviceUrl}", data = person)
+        new_person = Person()
 
         if(response.status_code == 200):
-            person = response.json()
-            return person
+            new_person = response.json()
+            return new_person() 
         else:
             return {}
 

@@ -4,9 +4,10 @@ from typing import Dict, List
 
 from app import db
 from app.udaconnect.models import Person
-from app.udaconnect.schemas import PersonSchema
+# from app.udaconnect.schemas import PersonSchema
 from geoalchemy2.functions import ST_AsText, ST_Point
 from sqlalchemy.sql import text
+from app.misc import log
 
 logging.basicConfig(level=logging.WARNING)
 logger = logging.getLogger("udaconnect-api")
@@ -15,6 +16,8 @@ logger = logging.getLogger("udaconnect-api")
 class PersonService:
     @staticmethod
     def create(person: Dict) -> Person:
+
+        log(person)
         new_person = Person()
         new_person.first_name = person["first_name"]
         new_person.last_name = person["last_name"]
@@ -23,6 +26,7 @@ class PersonService:
         db.session.add(new_person)
         db.session.commit()
 
+        log(new_person)
         return new_person
 
     @staticmethod

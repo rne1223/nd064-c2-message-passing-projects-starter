@@ -16,8 +16,6 @@ def create_app(env=None):
 
     app = Flask(__name__)
 
-    log("This is a test")
-
     app.config.from_object(config_by_name[env or "test"])
     api = Api(app, title="UdaConnect API", version="0.1.0")
 

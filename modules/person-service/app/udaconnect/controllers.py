@@ -1,5 +1,4 @@
 from datetime import datetime
-import logging
 
 from app.udaconnect.models import Person
 from app.udaconnect.schemas import PersonSchema
@@ -8,6 +7,7 @@ from flask import request
 from flask_accepts import accepts, responds
 from flask_restx import Namespace, Resource
 from typing import Optional, List
+from app.misc import log
 
 DATE_FORMAT = "%Y-%m-%d"
 
@@ -23,6 +23,7 @@ class PersonsResource(Resource):
     @responds(schema=PersonSchema)
     def post(self) -> Person:
         payload = request.get_json()
+        log(payload)        
         new_person: Person = PersonService.create(payload)
         return new_person
 
