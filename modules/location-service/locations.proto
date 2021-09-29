@@ -1,0 +1,33 @@
+
+syntax = "proto3";
+
+// id = fields.Integer()
+// person_id = fields.Integer()
+// longitude = fields.String(attribute="longitude")
+// latitude = fields.String(attribute="latitude")
+// creation_time = fields.DateTime()
+
+message LocationMessage {
+  int32 id = 1;
+  int32 person_id = 2;
+  string longitude = 3;
+  string latitude = 4;
+  string creation_time = 5;
+}
+
+message Empty {
+}
+
+message LocationMessageList {
+ repeated LocationMessage orders = 1;
+}
+
+message UniqueLocationMessage {
+  int32 id = 1;
+}
+
+service LocationService {
+   rpc Create(LocationMessage) returns (LocationMessage);
+   rpc GetLocation(UniqueLocationMessage) returns (LocationMessage);
+   rpc Get(Empty) returns (LocationMessageList);
+}

@@ -2,30 +2,31 @@ import time
 from concurrent import futures
 
 import grpc
-import order_pb2
-import order_pb2_grpc
+import locations_pb2
+import locations_pb2_grpc
 
 
-class OrderServicer(order_pb2_grpc.OrderServiceServicer):
+class LocationServicer(locations_pb2_grpc.LocationServiceServicer):
     def __init__(self) -> None:
-        self.result = order_pb2.OrderMessageList()
 
-        first_order = order_pb2.OrderMessage(
-            id="2222",
-            created_by="USER123",
-            status=order_pb2.OrderMessage.Status.QUEUED,
-            created_at='2020-03-12',
-            equipment=[order_pb2.OrderMessage.Equipment.KEYBOARD]
+        self.result = locations_pb2.LocationMessageList()
+
+        first_location = locations_pb2.LocationMessage(
+            id = 1,
+            person_id = 1,
+            longitude = "test",
+            latitude = "test",
+            creation_time = "2020-03-12",
+        )
+        second_location = locations_pb2.LocationMessage(
+            id = 2,
+            person_id = 2,
+            longitude = "3",
+            latitude = "4",
+            creation_time = "2020-03-12",
         )
 
-        second_order = order_pb2.OrderMessage(
-            id="3333",
-            created_by="USER123",
-            status=order_pb2.OrderMessage.Status.QUEUED,
-            created_at='2020-03-11',
-            equipment=[order_pb2.OrderMessage.Equipment.MOUSE]
-        )
-        self.result.orders.extend([first_order, second_order])
+        self.result.orders.extend([first_location, second_location])
 
     def Get(self, request, context):
 
@@ -36,23 +37,22 @@ class OrderServicer(order_pb2_grpc.OrderServiceServicer):
         print("Received a message!")
 
         request_value = {
-            "id": request.id,
-            "created_by": request.created_by,
-            "status": request.status,
-            "created_at": request.created_at,
-            "equipment": request.equipment 
+            "id" : request.id,
+            "person_id" : request.person_id,
+            "longitude" : request.longitude,
+            "latitude" : request.latitude,
+            "creation_time" : request.creation_time
         }
         print(request_value)
 
-        order = order_pb2.OrderMessage(**request_value)
+        order = locations_pb2.LocationMessage(**request_value)
 
-        self.result.orders.extend([order])
+        self.result.locations.extend([order])
         return order 
-
 
 # Initialize gRPC server
 server = grpc.server(futures.ThreadPoolExecutor(max_workers=2))
-order_pb2_grpc.add_OrderServiceServicer_to_server(OrderServicer(), server)
+locations_pb2_grpc.add_LocationServiceServicer_to_server(LocationServicer(), server)
 
 
 print("Server starting on port 5005...")

@@ -1,5 +1,5 @@
 # Base image for app to speed up image builds
-FROM python:3.7
+FROM python:3.7-slim-buster
 
 WORKDIR .
 
