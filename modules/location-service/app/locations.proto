@@ -19,7 +19,7 @@ message Empty {
 }
 
 message LocationMessageList {
- repeated LocationMessage orders = 1;
+ repeated LocationMessage locations = 1;
 }
 
 message UniqueLocationMessage {

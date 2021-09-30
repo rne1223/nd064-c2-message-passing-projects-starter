@@ -16,6 +16,10 @@ build:
     context: modules/webapp
     docker:
       dockerfile: Dockerfile
+  - image: rne1223/udaconnect-location-service
+    context: modules/location-service
+    docker:
+      dockerfile: Dockerfile
 deploy:
   kubectl:
     manifests:
@@ -26,4 +30,5 @@ deploy:
     - manifest/postgres.yaml
     - manifest/udaconnect-api.yaml
     - manifest/udaconnect-person-service.yaml
+    - manifest/udaconnect-location-service.yaml
     - manifest/udaconnect-webapp.yaml
