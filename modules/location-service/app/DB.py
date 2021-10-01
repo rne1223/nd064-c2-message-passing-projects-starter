@@ -1,6 +1,9 @@
 import os 
 import psycopg2
 from dotenv import load_dotenv
+from log import log
+
+load_dotenv()
 
 DB_USERNAME = os.environ["DB_USERNAME"]
 DB_PASSWORD = os.environ["DB_PASSWORD"]
@@ -13,7 +16,8 @@ DB_NAME = os.environ["DB_NAME"]
 # def get_db_connection():
 #     connection = db.connect() 
 
-def db_connect():
+def _db_connect():
+    log("GRPC CONNECTING TO DB")
     db_conn = psycopg2.connect(
         dbname=DB_NAME,
         user=DB_USERNAME,
@@ -21,11 +25,13 @@ def db_connect():
         host=DB_HOST,
         port=DB_PORT
     )
+    log("GRPC CONNECTED")
     return db_conn
 
 def save_to_db(location_data):
 
-    conn = db_connect()
+    log("SAVING LOCATION:")
+    conn = _db_connect()
     cursor = conn.cursor()
     # person_id = int(location_data["person_id"])
     # latitude = float(location_data["latitude"])
@@ -33,8 +39,11 @@ def save_to_db(location_data):
     person_id = 1 
     latitude = "testing Lat" 
     longitude = "testing long" 
-    sql = "INSERT INTO location (person_id, coordinate) VALUES ({}, ST_Point({}, {}))".format(person_id, latitude, longitude)
+    # sql = "INSERT INTO location (person_id, coordinate) VALUES ({}, ST_Point({}, {}))".format(person_id, latitude, longitude)
+    sql = "Select * from location".format(person_id, latitude, longitude)
     cursor.execute(sql)
     conn.commit()
     cursor.close()
     conn.close()
+
+    log("LOCATION SAVED")

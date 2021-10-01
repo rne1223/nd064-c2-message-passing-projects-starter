@@ -1,5 +1,6 @@
 import logging
 import sys
+from GRPC import GRPC_Server
 
 logger = logging.getLogger("__name__")
 logging.basicConfig( level=logging.DEBUG)
@@ -15,7 +16,9 @@ def log(msg):
 
 # @app.before_request
 def before_request():
-    pass
+
+    grpc_server = GRPC_Server()
+    grpc_server.Get()
     # # Set up a Kafka producer
     # TOPIC_NAME = 'items'
     # KAFKA_SERVER = 'localhost:9092'

@@ -4,22 +4,8 @@ from concurrent import futures
 import grpc
 import locations_pb2
 import locations_pb2_grpc
-# from app import log
-import logging
-import sys
-
-
-logger = logging.getLogger("__name__")
-logging.basicConfig( level=logging.DEBUG)
-h1 = logging.StreamHandler(sys.stdout)
-h1.setLevel(logging.DEBUG)
-h2 = logging.StreamHandler(sys.stderr)
-h2.setLevel(logging.ERROR)
-logger.addHandler(h1)
-logger.addHandler(h2)
-
-def log(msg):
-    logger.info(f"{msg}")
+from log import log
+import DB
 
 class LocationServicer(locations_pb2_grpc.LocationServiceServicer):
     def __init__(self) -> None:
@@ -45,10 +31,11 @@ class LocationServicer(locations_pb2_grpc.LocationServiceServicer):
 
     def Get(self, request, context):
         # print(result)
+        log("Getting locations from DB")
         return self.result
 
     def Create(self, request, context):
-        print("Received a message!")
+        log("Received a message!")
 
         request_value = {
             "id" : request.id,
@@ -57,8 +44,9 @@ class LocationServicer(locations_pb2_grpc.LocationServiceServicer):
             "latitude" : request.latitude,
             "creation_time" : request.creation_time
         }
-        print(request_value)
+        log(request_value)
 
+        DB.save_to_db(request_value)
         location = locations_pb2.LocationMessage(**request_value)
 
         self.result.locations.extend([location])
@@ -66,11 +54,11 @@ class LocationServicer(locations_pb2_grpc.LocationServiceServicer):
         return location 
 
     def GetLocation(self, request, context):
-        print("GetLocation a message!")
+        log("GetLocation a message!")
         request_value = {
             "id" : request.id,
         }
-        print(request_value)
+        log(request_value)
 
         return self.result.locations[request.id] 
 
@@ -79,7 +67,7 @@ server = grpc.server(futures.ThreadPoolExecutor(max_workers=2))
 locations_pb2_grpc.add_LocationServiceServicer_to_server(LocationServicer(), server)
 
 
-log("Server starting on port 5005...")
+log("GRPC Location Server starting on port 5005...")
 server.add_insecure_port("[::]:5005")
 server.start()
 # Keep thread alive
