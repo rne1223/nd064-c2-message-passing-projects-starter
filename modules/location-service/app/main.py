@@ -5,7 +5,7 @@ import grpc
 import locations_pb2
 import locations_pb2_grpc
 from log import log
-import DB
+# import DB
 
 class LocationServicer(locations_pb2_grpc.LocationServiceServicer):
     def __init__(self) -> None:
@@ -46,7 +46,7 @@ class LocationServicer(locations_pb2_grpc.LocationServiceServicer):
         }
         log(request_value)
 
-        DB.save_to_db(request_value)
+        # DB.save_to_db(request_value)
         location = locations_pb2.LocationMessage(**request_value)
 
         self.result.locations.extend([location])

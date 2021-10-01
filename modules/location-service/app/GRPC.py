@@ -1,29 +1,25 @@
 import grpc
 import locations_pb2
 import locations_pb2_grpc
-from app.misc import log
 from multiprocessing import Process, Pipe
+from log import log
 
 
 class GRPC_Server:
     def __init__(self):
         # Start subprocess
-        self.parent_conn, self.child_connn = Pipe()
-
-    def _start_grpc(self, conn):
         log("connecting to GRCP server")
         self.channel = grpc.insecure_channel("udaconnect-location-service:5005")
         log("connected to GRCP server")
         self.stub = locations_pb2_grpc.LocationServiceStub(self.channel)
 
     # Returns all the locations
-    def Get(self):
-
+    def get(self):
         log("Getting All Locations from DB")
         response = self.stub.Get(locations_pb2.Empty())
         return response
 
-    def GetLocation(self, id=None):
+    def getLocation(self, id=None):
 
         response = [{}] 
 
@@ -38,9 +34,14 @@ class GRPC_Server:
         
         return response
 
-    def CreateLocation(self,location_data=None):
+    def createLocation(self,location_data=None):
         pass
 
+
+if __name__ == "__main__":
+
+    grpc_getter = GRPC_Server()
+    grpc_getter.get()
 
 # response = stub.Get(locations_pb2.Empty())
 # location = locations_pb2.LocationMessage(
