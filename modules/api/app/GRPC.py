@@ -53,4 +53,4 @@ class GRPC_Server:
 
 # location_id = locations_pb2.UniqueLocationMessage(id=0)
 # response = stub.GetLocation(location_id)
-print(response)
+# print(response)
