@@ -6,10 +6,13 @@ import requests
 
 from app import db
 from app.misc import log
+from app.location_grpc import getLocation, createLocation
+
 from app.udaconnect.models import Connection, Location, Person
 from app.udaconnect.schemas import ConnectionSchema, LocationSchema, PersonSchema
 from geoalchemy2.functions import ST_AsText, ST_Point
 from sqlalchemy.sql import text
+
 
 logging.basicConfig(level=logging.WARNING)
 logger = logging.getLogger("udaconnect-api")
@@ -88,6 +91,9 @@ class ConnectionService:
 class LocationService:
     @staticmethod
     def retrieve(location_id) -> Location:
+        response = getLocation()
+        log(response)
+
         location, coord_text = (
             db.session.query(Location, Location.coordinate.ST_AsText())
             .filter(Location.id == location_id)
@@ -97,6 +103,23 @@ class LocationService:
         # Rely on database to return text form of point to reduce overhead of conversion in app code
         location.wkt_shape = coord_text
         return location
+
+    @staticmethod
+    def retrieve_all() -> Location:
+        response = getLocation()
+        log(response)
+
+        return response
+        # id = fields.Integer()
+        # person_id = fields.Integer()
+        # longitude = fields.String(attribute="longitude")
+        # latitude = fields.String(attribute="latitude")
+        # creation_time = fields.DateTime()
+        # location, coord_text = (
+        #     db.session.query(Location, Location.coordinate.ST_AsText())
+        #     .filter(Location.id == location_id)
+        #     .one()
+        # )
 
     @staticmethod
     def create(location: Dict) -> Location:
