@@ -13,11 +13,14 @@ channel = grpc.insecure_channel("udaconnect-location-service:5002")
 stub = locations_pb2_grpc.LocationServiceStub(channel)
 
 def fixTimeStamp(locations):
+
+    fixedLocations = []
     for loc in locations:
         dt = datetime.strptime(loc["creationTime"],'%Y-%m-%d %H:%M:%S.%f')
-        loc["creationTime"] = dt.isoformat()
+        loc["creationTime"] = dt
+        fixedLocations.append(loc)
 
-    return locations
+    return fixedLocations 
 
     
 def _getAllLocations():
@@ -37,6 +40,7 @@ def getLocation(lid=None):
     locations = MessageToDict(response)["locations"]
     locations = fixTimeStamp(locations)
 
+    log(locations)
     return locations
 
 def createLocation(location_data=None):
