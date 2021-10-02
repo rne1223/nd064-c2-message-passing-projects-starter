@@ -1,11 +1,14 @@
 import time
+from datetime import datetime
 from concurrent import futures
 
 import grpc
 import locations_pb2
 import locations_pb2_grpc
+
 from log import log
 # import DB
+# creation_time = datetime.strptime("2020-07-07 10:38:06.000000",'%Y-%m-%d %H:%M:%S.%f'))
 
 class LocationServicer(locations_pb2_grpc.LocationServiceServicer):
     def __init__(self) -> None:
@@ -17,14 +20,14 @@ class LocationServicer(locations_pb2_grpc.LocationServiceServicer):
             person_id = 1,
             longitude = "test",
             latitude = "test",
-            creation_time = "2020-03-12",
+            creation_time = "2020-07-07 10:37:06.000000"
         )
         second_location = locations_pb2.LocationMessage(
             id = 2,
             person_id = 2,
             longitude = "3",
             latitude = "4",
-            creation_time = "2020-03-12",
+            creation_time = "2020-07-07 10:38:06.000000"
         )
 
         self.result.locations.extend([first_location, second_location])

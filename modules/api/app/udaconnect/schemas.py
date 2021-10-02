@@ -6,10 +6,10 @@ from marshmallow_sqlalchemy.convert import ModelConverter as BaseModelConverter
 
 class LocationSchema(Schema):
     id = fields.Integer()
-    person_id = fields.Integer()
+    personId = fields.Integer()
     longitude = fields.String(attribute="longitude")
     latitude = fields.String(attribute="latitude")
-    creation_time = fields.DateTime()
+    creationTime = fields.DateTime()
 
     class Meta:
         model = Location

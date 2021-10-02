@@ -20,13 +20,13 @@ api = Namespace("UdaConnect", description="Connections via geolocation.")  # noq
 
 # TODO: This needs better exception handling
 
-
 @api.route("/locations")
 class LocationResource(Resource):
     @responds(schema=LocationSchema, many=True)
     def get(self) -> List[Location]:
         log("Getting all locations")
         locations: List[Location] = LocationService.retrieve_all()
+        log(locations)
         return locations
 
 @api.route("/locations/<location_id>")

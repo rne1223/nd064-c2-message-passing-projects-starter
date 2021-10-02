@@ -1,11 +1,6 @@
 
 syntax = "proto3";
 
-// id = fields.Integer()
-// person_id = fields.Integer()
-// longitude = fields.String(attribute="longitude")
-// latitude = fields.String(attribute="latitude")
-// creation_time = fields.DateTime()
 
 message LocationMessage {
   int32 id = 1;
