@@ -96,14 +96,15 @@ class LocationService:
 
     @staticmethod
     def retrieve(location_id) -> Location:
-        # response = getLocation()
 
+        respose = getLocation(0)
         location, coord_text = (
             db.session.query(Location, Location.coordinate.ST_AsText())
             .filter(Location.id == location_id)
             .one()
         )
 
+        log(location, coord_text)
         # Rely on database to return text form of point to reduce overhead of conversion in app code
         location.wkt_shape = coord_text
         return location

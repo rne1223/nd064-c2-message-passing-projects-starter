@@ -8,7 +8,7 @@ import locations_pb2_grpc
 
 from log import log
 # import DB
-# creation_time = datetime.strptime("2020-07-07 10:38:06.000000",'%Y-%m-%d %H:%M:%S.%f'))
+# creation_time = datetime.strptime("2020-07-07 10:38:06.00000",'%Y-%m-%d %H:%M:%S.%f+00:00'))
 
 class LocationServicer(locations_pb2_grpc.LocationServiceServicer):
     def __init__(self) -> None:
@@ -18,15 +18,15 @@ class LocationServicer(locations_pb2_grpc.LocationServiceServicer):
         first_location = locations_pb2.LocationMessage(
             id = 1,
             person_id = 1,
-            longitude = "test",
-            latitude = "test",
+            longitude = "37.553441",
+            latitude = "-122.290524",
             creation_time = "2020-07-07 10:37:06.000000"
         )
         second_location = locations_pb2.LocationMessage(
             id = 2,
             person_id = 2,
-            longitude = "3",
-            latitude = "4",
+            longitude = "-122.290524",
+            latitude = "37.553441",
             creation_time = "2020-07-07 10:38:06.000000"
         )
 
