@@ -104,7 +104,9 @@ class LocationService:
             .one()
         )
 
-        log(location, coord_text)
+        log(location)
+        log(coord_text)
+
         # Rely on database to return text form of point to reduce overhead of conversion in app code
         location.wkt_shape = coord_text
         return location

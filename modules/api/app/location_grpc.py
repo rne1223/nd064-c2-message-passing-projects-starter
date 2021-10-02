@@ -32,13 +32,14 @@ def getLocation(lid=None):
 
     if(lid is None):
         response = _getAllLocations() 
+        locations = MessageToDict(response)["locations"]
+        locations = fixTimeStamp(locations)
     else:
         # log("Getting Unique Location from DB")
-        location_id = locations_pb2.UniqueLocationMessage(lid)
+        location_id = locations_pb2.UniqueLocationMessage(id=lid)
         response = stub.GetLocation(location_id)
+        locations = MessageToDict(response)
 
-    locations = MessageToDict(response)["locations"]
-    locations = fixTimeStamp(locations)
 
     log(locations)
     return locations
