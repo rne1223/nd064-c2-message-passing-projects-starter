@@ -1,17 +1,17 @@
 import grpc
 import locations_pb2
 import locations_pb2_grpc
+from app.misc import log
 
 """
 Sample implementation of a writer that can be used to write messages to gRPC.
 """
 
-channel = grpc.insecure_channel("udaconnect-location-service:5005")
+channel = grpc.insecure_channel("udaconnect-location-service:5002")
 stub = locations_pb2_grpc.LocationServiceStub(channel)
 
 
 def _getAllLocations():
-    # log("Getting All Locations from DB")
     response = stub.Get(locations_pb2.Empty())
     return response
 
@@ -20,7 +20,6 @@ def getLocation(lid=None):
 
     if(lid is None):
         response = _getAllLocations() 
-        # log(response)
     else:
         # log("Getting Unique Location from DB")
         location_id = locations_pb2.UniqueLocationMessage(lid)

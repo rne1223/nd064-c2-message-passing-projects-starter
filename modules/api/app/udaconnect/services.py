@@ -90,9 +90,13 @@ class ConnectionService:
 
 class LocationService:
     @staticmethod
-    def retrieve(location_id) -> Location:
+    def retrieve_all() -> Location:
         response = getLocation()
-        log(response)
+        return response
+
+    @staticmethod
+    def retrieve(location_id) -> Location:
+        # response = getLocation()
 
         location, coord_text = (
             db.session.query(Location, Location.coordinate.ST_AsText())
@@ -104,22 +108,6 @@ class LocationService:
         location.wkt_shape = coord_text
         return location
 
-    @staticmethod
-    def retrieve_all() -> Location:
-        response = getLocation()
-        log(response)
-
-        return response
-        # id = fields.Integer()
-        # person_id = fields.Integer()
-        # longitude = fields.String(attribute="longitude")
-        # latitude = fields.String(attribute="latitude")
-        # creation_time = fields.DateTime()
-        # location, coord_text = (
-        #     db.session.query(Location, Location.coordinate.ST_AsText())
-        #     .filter(Location.id == location_id)
-        #     .one()
-        # )
 
     @staticmethod
     def create(location: Dict) -> Location:

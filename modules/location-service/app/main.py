@@ -31,7 +31,7 @@ class LocationServicer(locations_pb2_grpc.LocationServiceServicer):
 
     def Get(self, request, context):
         # print(result)
-        log("Getting locations from DB")
+        log("Getting all locations from DB")
         return self.result
 
     def Create(self, request, context):
@@ -54,7 +54,7 @@ class LocationServicer(locations_pb2_grpc.LocationServiceServicer):
         return location 
 
     def GetLocation(self, request, context):
-        log("GetLocation a message!")
+        log("GetLocation a location from DB")
         request_value = {
             "id" : request.id,
         }

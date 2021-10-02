@@ -11,6 +11,7 @@ from flask import request
 from flask_accepts import accepts, responds
 from flask_restx import Namespace, Resource
 from typing import Optional, List
+from app.misc import log
 
 DATE_FORMAT = "%Y-%m-%d"
 
@@ -22,10 +23,12 @@ api = Namespace("UdaConnect", description="Connections via geolocation.")  # noq
 
 @api.route("/locations")
 class LocationResource(Resource):
-    @responds(schema=LocationSchema)
+    @responds(schema=LocationSchema, many=True)
     def get(self) -> List[Location]:
-        location: List[Location] = LocationService.retrieve_all()
-        return location
+        log("Getting all locations")
+        locations: List[Location] = LocationService.retrieve_all()
+        log(type(locations))
+        return locations
 
 @api.route("/locations/<location_id>")
 @api.param("location_id", "Unique ID for a given Location", _in="query")
