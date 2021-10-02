@@ -2,6 +2,7 @@ import grpc
 import locations_pb2
 import locations_pb2_grpc
 from app.misc import log
+from google.protobuf.json_format import MessageToDict
 
 """
 Sample implementation of a writer that can be used to write messages to gRPC.
@@ -25,7 +26,9 @@ def getLocation(lid=None):
         location_id = locations_pb2.UniqueLocationMessage(lid)
         response = stub.GetLocation(location_id)
 
-    return response
+    locations = MessageToDict(response)["locations"]
+
+    return locations
 
 def createLocation(location_data=None):
     location = locations_pb2.LocationMessage(

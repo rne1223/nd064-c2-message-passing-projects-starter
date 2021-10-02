@@ -27,7 +27,6 @@ class LocationResource(Resource):
     def get(self) -> List[Location]:
         log("Getting all locations")
         locations: List[Location] = LocationService.retrieve_all()
-        log(type(locations))
         return locations
 
 @api.route("/locations/<location_id>")
