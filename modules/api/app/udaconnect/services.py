@@ -1,5 +1,6 @@
 import logging
 from datetime import datetime, timedelta
+from re import I
 from typing import Dict, List
 import requests
 
@@ -37,7 +38,10 @@ class ConnectionService:
         ).all()
 
         # Cache all users in memory for quick lookup
-        person_map: Dict[str, Person] = {person.id: person for person in PersonService.retrieve_all()}
+        person_map: Dict[str, Person] = {person['id']: person for person in PersonService.retrieve_all()}
+        
+        log("FINDING CONNECTIONS")
+        log(person_map) 
 
         # Prepare arguments for queries
         data = []
