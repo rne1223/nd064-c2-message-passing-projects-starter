@@ -40,10 +40,22 @@ def save_to_db(location_data):
     latitude = "testing Lat" 
     longitude = "testing long" 
     # sql = "INSERT INTO location (person_id, coordinate) VALUES ({}, ST_Point({}, {}))".format(person_id, latitude, longitude)
-    sql = "Select * from location".format(person_id, latitude, longitude)
-    cursor.execute(sql)
+    # cursor.execute(sql)
     conn.commit()
     cursor.close()
     conn.close()
 
     log("LOCATION SAVED")
+
+def getLocById(id):
+
+    log("GETTING LOCATION BY ID FROM DB:")
+    conn = _db_connect()
+    cursor = conn.cursor()
+    sql = f"SELECT * FROM LOCATION WHERE id={id}"
+    data = cursor.execute(sql)
+    conn.commit()
+    cursor.close()
+    conn.close()
+
+    return data

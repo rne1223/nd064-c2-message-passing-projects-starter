@@ -7,7 +7,7 @@ import locations_pb2
 import locations_pb2_grpc
 
 from log import log
-# import DB
+import DB
 # creation_time = datetime.strptime("2020-07-07 10:38:06.00000",'%Y-%m-%d %H:%M:%S.%f+00:00'))
 
 class LocationServicer(locations_pb2_grpc.LocationServiceServicer):
@@ -58,11 +58,8 @@ class LocationServicer(locations_pb2_grpc.LocationServiceServicer):
 
     def GetLocation(self, request, context):
         log("GetLocation a location from DB")
-        request_value = {
-            "id" : request.id,
-        }
-        log(request_value)
-
+        data = DB.getLocById(request.id)
+        log(data)
         return self.result.locations[request.id] 
 
 # Initialize gRPC server

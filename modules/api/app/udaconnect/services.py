@@ -98,6 +98,7 @@ class LocationService:
     def retrieve(location_id) -> Location:
 
         respose = getLocation(0)
+
         location, coord_text = (
             db.session.query(Location, Location.coordinate.ST_AsText())
             .filter(Location.id == location_id)
