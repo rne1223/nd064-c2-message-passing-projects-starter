@@ -97,7 +97,7 @@ class LocationService:
     @staticmethod
     def retrieve(location_id) -> Location:
 
-        respose = getLocation(0)
+        respose = getLocation(location_id)
 
         location, coord_text = (
             db.session.query(Location, Location.coordinate.ST_AsText())

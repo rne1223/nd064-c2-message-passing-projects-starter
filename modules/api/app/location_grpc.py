@@ -36,7 +36,7 @@ def getLocation(lid=None):
         locations = fixTimeStamp(locations)
     else:
         # log("Getting Unique Location from DB")
-        location_id = locations_pb2.UniqueLocationMessage(id=lid)
+        location_id = locations_pb2.UniqueLocationMessage(id=int(lid))
         response = stub.GetLocation(location_id)
         locations = MessageToDict(response)
 

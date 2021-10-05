@@ -57,10 +57,10 @@ class LocationServicer(locations_pb2_grpc.LocationServiceServicer):
         return location 
 
     def GetLocation(self, request, context):
-        log("GetLocation a location from DB")
+        log("GETLOCATION A LOCATION FROM DB")
         data = DB.getLocById(request.id)
         log(data)
-        return self.result.locations[request.id] 
+        return self.result.locations[0] 
 
 # Initialize gRPC server
 server = grpc.server(futures.ThreadPoolExecutor(max_workers=2))
