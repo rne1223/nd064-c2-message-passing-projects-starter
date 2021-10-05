@@ -1,6 +1,7 @@
 import time
 from datetime import datetime
 from concurrent import futures
+from geoalchemy2.functions import ST_AsText, ST_Point
 
 import grpc
 import locations_pb2
@@ -58,8 +59,15 @@ class LocationServicer(locations_pb2_grpc.LocationServiceServicer):
 
     def GetLocation(self, request, context):
         log("GETLOCATION A LOCATION FROM DB")
-        data = DB.getLocById(request.id)
+        data = DB.getLocById(request.id)[0]
         log(data)
+        request_value = {
+            "id" : 0,
+            "person_id" : 0,
+            "longitude" : "hello",
+            "latitude" : "world",
+            "creation_time" : request.creation_time
+        }
         return self.result.locations[0] 
 
 # Initialize gRPC server
