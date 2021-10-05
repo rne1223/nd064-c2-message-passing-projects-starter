@@ -1,22 +1,14 @@
-import logging
-from datetime import datetime, timedelta
 from typing import Dict, List
 
 from app import db
 from app.udaconnect.models import Person
-# from app.udaconnect.schemas import PersonSchema
-from geoalchemy2.functions import ST_AsText, ST_Point
-from sqlalchemy.sql import text
 from app.misc import log
-
-logging.basicConfig(level=logging.WARNING)
-logger = logging.getLogger("udaconnect-api")
 
 
 class PersonService:
     @staticmethod
     def create(person: Dict) -> Person:
-
+        log("GATHERING DETAILS AND INSERTING INTO DB")
         log(person)
         new_person = Person()
         new_person.first_name = person["first_name"]
@@ -27,6 +19,7 @@ class PersonService:
         db.session.commit()
 
         log(new_person)
+        log("PERSON CREATED IN DB")
         return new_person
 
     @staticmethod

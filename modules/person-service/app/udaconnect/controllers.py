@@ -16,19 +16,19 @@ api = Namespace("Persons API", description="All person related stuff")  # noqa
 
 # TODO: This needs better exception handling
 
-
 @api.route("/persons")
 class PersonsResource(Resource):
     @accepts(schema=PersonSchema)
     @responds(schema=PersonSchema)
     def post(self) -> Person:
+        log("CREATING A NEW PERSON IN DB")
         payload = request.get_json()
-        log(payload)        
         new_person: Person = PersonService.create(payload)
         return new_person
 
     @responds(schema=PersonSchema, many=True)
     def get(self) -> List[Person]:
+        log("GETTING ALL PERSONS FROM DB")
         persons: List[Person] = PersonService.retrieve_all()
         return persons
 

@@ -101,19 +101,6 @@ class LocationService:
         location = getLocation(location_id)
         log("LOCATION RETRIEVED FROM DB")
         log(location)
-
-        # connecting to DB directly
-        # location, coord_text = (
-        #     db.session.query(Location, Location.coordinate.ST_AsText())
-        #     .filter(Location.id == location_id)
-        #     .one()
-        # )
-
-        # log(location)
-        # log(coord_text)
-
-        # Rely on database to return text form of point to reduce overhead of conversion in app code
-        # location.wkt_shape = coord_text
         return location
 
 
@@ -137,14 +124,37 @@ class LocationService:
 class PersonService:
     @staticmethod
     def create(person: Dict) -> Person:
-        response = requests.post(f"{serviceUrl}", data = person)
+        log("GATHERING DETAILS AND INSERTING INTO DB")
+        log(person)
         new_person = Person()
+        new_person.first_name = person["first_name"]
+        new_person.last_name = person["last_name"]
+        new_person.company_name = person["company_name"]
 
-        if(response.status_code == 200):
-            new_person = response.json()
-            return new_person() 
-        else:
-            return {}
+        db.session.add(new_person)
+        db.session.commit()
+
+        log(new_person)
+        log("PERSON CREATED IN DB")
+        return new_person
+
+        # log(person)
+        # log("CALLING PERSON SERVICE")
+        # response = requests.post(f"{serviceUrl}", data = person)
+
+        # data = response.json()
+        # log("PERSON SERVICE RESPONDED")
+        # log(data)
+        # # new_person = Person()
+        # # new_person.first_name = person["first_name"]
+        # # new_person.last_name = person["last_name"]
+        # # new_person.company_name = person["company_name"]
+
+        # if(response.status_code == 200):
+        #     new_person = response.json()
+        #     return new_person 
+        # else:
+        #     return {}
 
     @staticmethod
     def retrieve(person_id: int) -> Person:
