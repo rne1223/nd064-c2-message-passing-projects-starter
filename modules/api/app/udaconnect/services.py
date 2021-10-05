@@ -97,9 +97,11 @@ class LocationService:
     @staticmethod
     def retrieve(location_id) -> Location:
 
+        # using grpc to call the Location service
         response = getLocation(location_id)
         log(response)
 
+        # connecting to DB directly
         location, coord_text = (
             db.session.query(Location, Location.coordinate.ST_AsText())
             .filter(Location.id == location_id)

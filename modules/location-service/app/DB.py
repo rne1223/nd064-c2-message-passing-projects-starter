@@ -1,7 +1,18 @@
-import os 
+import os
 import psycopg2
 from dotenv import load_dotenv
 from log import log
+from shapely import geometry, wkb
+
+from sqlalchemy import create_engine
+
+# from sqlalchemy.orm.session import sessionmaker
+# from models import Location
+# from schemas import LocationSchema
+# from geoalchemy2.functions import ST_AsText, ST_Point
+# # from sqlalchemy.sql import text
+# from sqlalchemy import create_engine
+# from sqlalchemy.orm import Session, query, sessionmaker
 
 load_dotenv()
 
@@ -11,10 +22,8 @@ DB_HOST = os.environ["DB_HOST"]
 DB_PORT = os.environ["DB_PORT"]
 DB_NAME = os.environ["DB_NAME"]
 
-# db = create_engine(f"postgresql://{DB_USERNAME}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}")
+engine = create_engine(f"postgresql://{DB_USERNAME}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}")
 
-# def get_db_connection():
-#     connection = db.connect() 
 
 def _db_connect():
     log("GRPC CONNECTING TO DB")
@@ -27,25 +36,6 @@ def _db_connect():
     )
     log("GRPC CONNECTED")
     return db_conn
-
-def save_to_db(location_data):
-
-    log("SAVING LOCATION:")
-    conn = _db_connect()
-    cursor = conn.cursor()
-    # person_id = int(location_data["person_id"])
-    # latitude = float(location_data["latitude"])
-    # longitude = float(location_data["longitude"])
-    person_id = 1 
-    latitude = "testing Lat" 
-    longitude = "testing long" 
-    # sql = "INSERT INTO location (person_id, coordinate) VALUES ({}, ST_Point({}, {}))".format(person_id, latitude, longitude)
-    # cursor.execute(sql)
-    conn.commit()
-    cursor.close()
-    conn.close()
-
-    log("LOCATION SAVED")
 
 def getLocById(id):
 
@@ -61,3 +51,22 @@ def getLocById(id):
     conn.close()
 
     return data
+
+# def save_to_db(location_data):
+
+#     log("SAVING LOCATION:")
+#     conn = _db_connect()
+#     cursor = conn.cursor()
+#     # person_id = int(location_data["person_id"])
+#     # latitude = float(location_data["latitude"])
+#     # longitude = float(location_data["longitude"])
+#     person_id = 1 
+#     latitude = "testing Lat" 
+#     longitude = "testing long" 
+#     # sql = "INSERT INTO location (person_id, coordinate) VALUES ({}, ST_Point({}, {}))".format(person_id, latitude, longitude)
+#     # cursor.execute(sql)
+#     conn.commit()
+#     cursor.close()
+#     conn.close()
+
+#     log("LOCATION SAVED")
