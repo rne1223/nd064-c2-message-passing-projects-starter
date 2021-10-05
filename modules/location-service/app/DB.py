@@ -52,7 +52,7 @@ def getLocById(id):
     log("GETTING LOCATION BY ID FROM DB:")
     conn = _db_connect()
     cursor = conn.cursor()
-    sql = f"SELECT * FROM LOCATION WHERE id={id}"
+    sql = f"SELECT ST_AsText(*) FROM LOCATION WHERE id={id}"
     data = cursor.execute(sql)
     conn.commit()
     cursor.close()
