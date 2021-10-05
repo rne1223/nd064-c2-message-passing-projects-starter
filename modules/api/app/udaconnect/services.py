@@ -98,21 +98,22 @@ class LocationService:
     def retrieve(location_id) -> Location:
 
         # using grpc to call the Location service
-        response = getLocation(location_id)
-        log(response)
+        location = getLocation(location_id)
+        log("LOCATION RETRIEVED FROM DB")
+        log(location)
 
         # connecting to DB directly
-        location, coord_text = (
-            db.session.query(Location, Location.coordinate.ST_AsText())
-            .filter(Location.id == location_id)
-            .one()
-        )
+        # location, coord_text = (
+        #     db.session.query(Location, Location.coordinate.ST_AsText())
+        #     .filter(Location.id == location_id)
+        #     .one()
+        # )
 
         # log(location)
         # log(coord_text)
 
         # Rely on database to return text form of point to reduce overhead of conversion in app code
-        location.wkt_shape = coord_text
+        # location.wkt_shape = coord_text
         return location
 
 

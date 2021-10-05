@@ -29,19 +29,18 @@ def _getAllLocations():
 
 def getLocation(lid=None):
     response = [{}] 
+    locations = {}
 
     if(lid is None):
+        log("GOT ALL LOCATIONS FROM DB")
         response = _getAllLocations() 
         locations = MessageToDict(response)["locations"]
-        locations = fixTimeStamp(locations)
     else:
-        # log("Getting Unique Location from DB")
+        log("GOT LOCATION FROM DB")
         location_id = locations_pb2.UniqueLocationMessage(id=int(lid))
         response = stub.GetLocation(location_id)
         locations = MessageToDict(response)
 
-
-    log(locations)
     return locations
 
 def createLocation(location_data=None):

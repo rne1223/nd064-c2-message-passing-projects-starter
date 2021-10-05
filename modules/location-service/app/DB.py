@@ -34,15 +34,20 @@ def _db_connect():
         host=DB_HOST,
         port=DB_PORT
     )
-    log("GRPC CONNECTED")
+    log("GRPC CONNECTED TO DB")
     return db_conn
 
-def getLocById(id):
+def getLocById(id=None):
 
-    log("GETTING LOCATION BY ID FROM DB:")
     conn = _db_connect()
     cursor = conn.cursor()
-    sql = f"SELECT * FROM location WHERE id={int(id)}"
+    
+    if(id):
+        log("GETTING LOCATION BY ID FROM DB:")
+        sql = f"SELECT * FROM location WHERE id={int(id)}"
+    else:
+        log("GETTING ALL LOCATIONS FROM DB:")
+        sql = f"SELECT * FROM location"
 
     cursor.execute(sql)
     data = cursor.fetchall()

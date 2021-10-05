@@ -24,7 +24,7 @@ api = Namespace("UdaConnect", description="Connections via geolocation.")  # noq
 class LocationResource(Resource):
     @responds(schema=LocationSchema, many=True)
     def get(self) -> List[Location]:
-        log("Getting all locations")
+        log("GETTING ALL LOCATIONS")
         locations: List[Location] = LocationService.retrieve_all()
         return locations
 
