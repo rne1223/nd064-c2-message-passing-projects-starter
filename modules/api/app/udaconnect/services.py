@@ -7,19 +7,31 @@ import requests
 from app import db
 from app.misc import log
 from app.location_grpc import getLocation
-import app.kafka_producer as kprod
 
 from app.udaconnect.models import Connection, Location, Person
 from app.udaconnect.schemas import ConnectionSchema, LocationSchema, PersonSchema
 from geoalchemy2.functions import ST_AsText, ST_Point
 from sqlalchemy.sql import text
-from app import g
+from flask import g
+from kafka import KafkaProducer
+from app import app
 
 
 logging.basicConfig(level=logging.WARNING)
 logger = logging.getLogger("udaconnect-api")
 
 serviceUrl = "http://udaconnect-person-service:5001/api/persons"
+
+
+@app.before_request
+def before_request():
+    # Set up a Kafka producer
+    TOPIC_NAME = 'items'
+    KAFKA_SERVER = 'kafka-0.kafka-headless.default.svc.cluster.local:9093'
+    producer = KafkaProducer(bootstrap_servers=KAFKA_SERVER)
+    # Setting Kafka to g enables us to use this
+    # in other parts of our application
+    g.kafka_producer = producer
 
 class ConnectionService:
     @staticmethod
@@ -37,14 +49,12 @@ class ConnectionService:
         ).filter(Location.creation_time < end_date).filter(
             Location.creation_time >= start_date
         ).all()
-        # log(locations)
 
         # Cache all users in memory for quick lookup
         person_map: Dict[str, Person] = {person['id']: person for person in PersonService.retrieve_all()}
         
         log("FINDING CONNECTIONS")
-        # log(person_map) 
-        # kprod.sendMsg("looking for a location")
+
         # kafka_producer = g.kafka_producer
         # kafka_producer.send("items","hello world from api service")
 

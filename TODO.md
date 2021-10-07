@@ -17,7 +17,7 @@ To break down the app into microservices by using messaging the learned messagin
 
 -[] Plan the message passing strategies based on the business requirements for UdaConnect
     -[x] Need to use Kafka
-    -[] Need to use Grpc 
+    -[x] Need to use Grpc 
     -[] Upgrade or create a new API 
 
 -[] Create a diagram of your microservice architecture showing the services and message passing strategies
