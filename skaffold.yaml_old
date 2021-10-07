@@ -8,16 +8,16 @@ build:
     context: modules/api
     docker:
       dockerfile: Dockerfile
-  - image: rne1223/udaconnect-connection-service
-    context: modules/connection-service
-    docker:
-      dockerfile: Dockerfile
   - image: rne1223/udaconnect-location-service
     context: modules/location-service
     docker:
       dockerfile: Dockerfile
   - image: rne1223/udaconnect-person-service
     context: modules/person-service
+    docker:
+      dockerfile: Dockerfile
+  - image: rne1223/udaconnect-connection-service
+    context: modules/connection-service
     docker:
       dockerfile: Dockerfile
   - image: rne1223/udaconnect-webapp
@@ -34,7 +34,7 @@ deploy:
     - manifest/kafka.yaml
     - manifest/postgres.yaml
     - manifest/udaconnect-api.yaml
-    - manifest/udaconnect-connection-service.yaml
     - manifest/udaconnect-location-service.yaml
     - manifest/udaconnect-person-service.yaml
+    - manifest/udaconnect-connection-service.yaml
     - manifest/udaconnect-webapp.yaml

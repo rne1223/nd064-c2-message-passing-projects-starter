@@ -7,12 +7,13 @@ import requests
 from app import db
 from app.misc import log
 from app.location_grpc import getLocation
-from app.kafka_producer import sendMsg
+import app.kafka_producer as kprod
 
 from app.udaconnect.models import Connection, Location, Person
 from app.udaconnect.schemas import ConnectionSchema, LocationSchema, PersonSchema
 from geoalchemy2.functions import ST_AsText, ST_Point
 from sqlalchemy.sql import text
+from app import g
 
 
 logging.basicConfig(level=logging.WARNING)
@@ -43,7 +44,9 @@ class ConnectionService:
         
         log("FINDING CONNECTIONS")
         # log(person_map) 
-        sendMsg("looking for a location")
+        # kprod.sendMsg("looking for a location")
+        # kafka_producer = g.kafka_producer
+        # kafka_producer.send("items","hello world from api service")
 
         # Prepare arguments for queries
         data = []
