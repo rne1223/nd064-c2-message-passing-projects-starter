@@ -1,13 +1,13 @@
 import logging
 from datetime import datetime, timedelta
-from re import I
 from typing import Dict, List
 import requests
 
 
 from app import db
 from app.misc import log
-from app.location_grpc import getLocation, createLocation
+from app.location_grpc import getLocation
+from app.kafka_producer import sendMsg
 
 from app.udaconnect.models import Connection, Location, Person
 from app.udaconnect.schemas import ConnectionSchema, LocationSchema, PersonSchema
@@ -36,15 +36,14 @@ class ConnectionService:
         ).filter(Location.creation_time < end_date).filter(
             Location.creation_time >= start_date
         ).all()
-
-        loc = LocationService.retrieve_all()
-        log(loc)
+        # log(locations)
 
         # Cache all users in memory for quick lookup
         person_map: Dict[str, Person] = {person['id']: person for person in PersonService.retrieve_all()}
         
         log("FINDING CONNECTIONS")
         # log(person_map) 
+        sendMsg("looking for a location")
 
         # Prepare arguments for queries
         data = []
@@ -61,7 +60,7 @@ class ConnectionService:
             )
 
         query = text(
-            """
+        """
         SELECT  person_id, id, ST_X(coordinate), ST_Y(coordinate), creation_time
         FROM    location
         WHERE   ST_DWithin(coordinate::geography,ST_SetSRID(ST_MakePoint(:latitude,:longitude),4326)::geography, :meters)
