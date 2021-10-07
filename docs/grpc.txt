@@ -1,0 +1,2 @@
+Get() // Gets all locations from the database
+GetLocation() // Gets a location by id
