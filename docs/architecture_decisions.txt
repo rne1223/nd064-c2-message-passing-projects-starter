@@ -1,0 +1,14 @@
+Api-Module
+This is the main module that all the requests go through then it communicates with the prespective services. 
+The api-service module is a flask api that can be easily modify.
+
+Person-Module
+The person-sevice module is a flask-api that communicates with the Api-service and the database. 
+The flexibility of flask makes it easy to query and input person into the db.
+
+Location-Module
+The location-service module is a grpc server that communicates with the Api-service and the database. 
+I belive that GRPC will help improve latency in searching and query for multiple locations.
+
+Connection-Module
+The connection-service module is a kafka consumer that listens for the Api connection messages. Kafka will help scale to multiple containers to make the necessary calculations if traffic increases. 
