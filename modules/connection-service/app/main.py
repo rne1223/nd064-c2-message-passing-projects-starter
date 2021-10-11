@@ -14,7 +14,7 @@ consumer = KafkaConsumer(TOPIC_NAME, bootstrap_servers=KAFKA_SERVER,
      api_version=(0,10,1))
 
 for message in consumer: 
-    for i in range(20): 
+    for i in range(2): 
         log(f"New locations: {message.value}")
 
 # TODO: Search DB for close connections

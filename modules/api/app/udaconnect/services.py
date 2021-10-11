@@ -12,20 +12,26 @@ from app.udaconnect.models import Connection, Location, Person
 from app.udaconnect.schemas import ConnectionSchema, LocationSchema, PersonSchema
 from geoalchemy2.functions import ST_AsText, ST_Point
 from sqlalchemy.sql import text
-from flask import g
-from time import sleep
+from kafka import KafkaProducer
+from json import dumps
 
 logging.basicConfig(level=logging.WARNING)
 logger = logging.getLogger("udaconnect-api")
 
 serviceUrl = "http://udaconnect-person-service:5001/api/persons"
 
-
+# Set up a Kafka producer
+KAFKA_SERVER = 'kafka-0.kafka-headless.default.svc.cluster.local:9093'
+producer = KafkaProducer(bootstrap_servers=KAFKA_SERVER,
+                        value_serializer=lambda x: dumps(x).encode('utf-8'),
+                        api_version=(0,10,1))
 
 class ConnectionService:
     @staticmethod
     def find_contacts(person_id: int, start_date: datetime, end_date: datetime, meters=5
     ) -> List[Connection]:
+
+
         """
         Finds all Person who have been within a given distance of a given Person within a date range.
 
@@ -44,10 +50,9 @@ class ConnectionService:
         
         log("FINDING CONNECTIONS")
 
-        kafka_producer = g.kafka_producer
-        data = {'number' : f"{e}"}
-        kafka_producer.send('items', value=data)
-        kafka_producer.flush()
+        e = "data"
+        da = {'number' : f"{e}"}
+        producer.send('items', value=da)
 
         # Prepare arguments for queries
         data = []

@@ -11,16 +11,6 @@ db = SQLAlchemy()
 
 app = Flask(__name__)
 
-@app.before_first_request
-def kafkaSetup():
-    # Set up a Kafka producer
-    KAFKA_SERVER = 'kafka-0.kafka-headless.default.svc.cluster.local:9093'
-    producer = KafkaProducer(bootstrap_servers=KAFKA_SERVER,
-                           value_serializer=lambda x: dumps(x).encode('utf-8'),
-                           api_version=(0,10,1))
-
-    g.kafka_producer = producer
-
 def create_app(env=None):
     from app.config import config_by_name
     from app.routes import register_routes
