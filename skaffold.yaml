@@ -27,8 +27,6 @@ build:
 deploy:
   kubectl:
     manifests:
-    - argocd/argocd-server-nodeport.yml
-    - argocd/udaconnect-application.yml
     - manifest/db-configmap.yaml
     - manifest/db-secret.yaml
     - manifest/kafka.yaml
