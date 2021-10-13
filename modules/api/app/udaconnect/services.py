@@ -50,6 +50,7 @@ class ConnectionService:
         
         log("FINDING CONNECTIONS")
 
+        # Using Kafka to send some data
         e = "data"
         da = {'number' : f"{e}"}
         producer.send('items', value=da)
@@ -141,35 +142,14 @@ class PersonService:
     def create(person: Dict) -> Person:
         log("GATHERING DETAILS AND INSERTING INTO DB")
         log(person)
-        new_person = Person()
-        new_person.first_name = person["first_name"]
-        new_person.last_name = person["last_name"]
-        new_person.company_name = person["company_name"]
+        response = requests.post(f"{serviceUrl}", json=person)
+        log(response.json())
 
-        db.session.add(new_person)
-        db.session.commit()
-
-        log(new_person)
-        log("PERSON CREATED IN DB")
-        return new_person
-
-        # log(person)
-        # log("CALLING PERSON SERVICE")
-        # response = requests.post(f"{serviceUrl}", data = person)
-
-        # data = response.json()
-        # log("PERSON SERVICE RESPONDED")
-        # log(data)
-        # # new_person = Person()
-        # # new_person.first_name = person["first_name"]
-        # # new_person.last_name = person["last_name"]
-        # # new_person.company_name = person["company_name"]
-
-        # if(response.status_code == 200):
-        #     new_person = response.json()
-        #     return new_person 
-        # else:
-        #     return {}
+        if(response.status_code == 200):
+            new_person = response.json()
+            return new_person 
+        else:
+            return {"error": response.status_code}
 
     @staticmethod
     def retrieve(person_id: int) -> Person:
@@ -180,7 +160,7 @@ class PersonService:
             person = response.json()
             return person
         else:
-            return {}
+            return {"error":response.status_code}
 
     @staticmethod
     def retrieve_all() -> List[Person]:

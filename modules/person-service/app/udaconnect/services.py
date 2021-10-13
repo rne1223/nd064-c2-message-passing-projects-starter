@@ -10,6 +10,7 @@ class PersonService:
     def create(person: Dict) -> Person:
         log("GATHERING DETAILS AND INSERTING INTO DB")
         log(person)
+        
         new_person = Person()
         new_person.first_name = person["first_name"]
         new_person.last_name = person["last_name"]
@@ -18,8 +19,7 @@ class PersonService:
         db.session.add(new_person)
         db.session.commit()
 
-        log(new_person)
-        log("PERSON CREATED IN DB")
+        log("PERSON CREATED IN DB WITH ID: " + new_person) 
         return new_person
 
     @staticmethod
