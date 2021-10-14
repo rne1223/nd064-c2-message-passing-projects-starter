@@ -1,8 +1,10 @@
 import logging
 import sys
+from pprint import pformat
 
-logger = logging.getLogger("__name__")
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(format='%(asctime)s,%(msecs)d %(levelname)-8s [%(filename)s:%(lineno)d] %(message)s',
+    datefmt='%Y-%m-%d:%H:%M:%S', level=logging.INFO)
+logger = logging.getLogger(__name__)
 # h1 = logging.StreamHandler(sys.stdout)
 # h1.setLevel(logging.DEBUG)
 # logger.addHandler(h1)
@@ -17,4 +19,4 @@ logging.basicConfig(level=logging.INFO)
 # logger.addFilter(NoParsingFilter())
 
 def log(msg):
-    logger.info(f"{msg}")
+    logger.info(f"{pformat(msg)}")

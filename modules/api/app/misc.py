@@ -1,8 +1,8 @@
 import logging
 import sys
 
-logger = logging.getLogger("__name__")
-logging.basicConfig( level=logging.DEBUG)
+logger = logging.getLogger(__name__)
+logging.basicConfig( level=logging.INFO)
 # h1 = logging.StreamHandler(sys.stdout)
 # h1.setLevel(logging.DEBUG)
 # logger.addHandler(h1)

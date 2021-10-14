@@ -1,9 +1,8 @@
 import logging
+from time import sleep
 from datetime import datetime, timedelta
 from typing import Dict, List
 import requests
-
-
 from app import db
 from app.misc import log
 from app.location_grpc import getLocation
@@ -12,8 +11,10 @@ from app.udaconnect.models import Connection, Location, Person
 from app.udaconnect.schemas import ConnectionSchema, LocationSchema, PersonSchema
 from geoalchemy2.functions import ST_AsText, ST_Point
 from sqlalchemy.sql import text
-from kafka import KafkaProducer
-from json import dumps
+from kafka import KafkaProducer, KafkaConsumer
+from json import dumps, load, loads
+
+from multiprocessing import Process
 
 logging.basicConfig(level=logging.WARNING)
 logger = logging.getLogger("udaconnect-api")
@@ -26,11 +27,35 @@ producer = KafkaProducer(bootstrap_servers=KAFKA_SERVER,
                         value_serializer=lambda x: dumps(x).encode('utf-8'),
                         api_version=(0,10,1))
 
+# Set up a Kafka consumer 
+TOPIC_NAME = 'con'
+consumer = KafkaConsumer(TOPIC_NAME, bootstrap_servers=KAFKA_SERVER,
+     auto_offset_reset='earliest',
+     enable_auto_commit=True,
+     group_id='api-consumer',
+     value_deserializer=lambda x: loads(x.decode('utf-8')),
+     api_version=(0,10,1))
+
 class ConnectionService:
     @staticmethod
     def find_contacts(person_id: int, start_date: datetime, end_date: datetime, meters=5
     ) -> List[Connection]:
 
+        
+        log("FINDING CONNECTIONS")
+
+        # Sending data to Connection Service through Kafka
+        dts = {"person_id": str( person_id ),
+        "start_date": start_date.strftime("%Y-%m-%d"),
+        "end_date": end_date.strftime("%Y-%m-%d")}
+        producer.send("items",value=dts)
+
+        # Getting data from Connection Service through Kafka
+        person_map: Dict[str, Person] = []
+        for message in consumer: 
+            persons = message.value
+            person_map = loads(persons.replace("'",'"'))
+            break
 
         """
         Finds all Person who have been within a given distance of a given Person within a date range.
@@ -45,17 +70,6 @@ class ConnectionService:
             Location.creation_time >= start_date
         ).all()
 
-        # Cache all users in memory for quick lookup
-        person_map: Dict[str, Person] = {person['id']: person for person in PersonService.retrieve_all()}
-        
-        log("FINDING CONNECTIONS")
-
-        # Using Kafka to send some data
-        e = "data"
-        da = {'number' : f"{e}"}
-        producer.send('items', value=da)
-
-        # Prepare arguments for queries
         data = []
         for location in locations:
             data.append(
@@ -68,7 +82,6 @@ class ConnectionService:
                     "end_date": (end_date + timedelta(days=1)).strftime("%Y-%m-%d"),
                 }
             )
-
         query = text(
         """
         SELECT  person_id, id, ST_X(coordinate), ST_Y(coordinate), creation_time
@@ -97,7 +110,7 @@ class ConnectionService:
 
                 result.append(
                     Connection(
-                        person=person_map[exposed_person_id], location=location,
+                        person=person_map[str(exposed_person_id)], location=location,
                     )
                 )
 
