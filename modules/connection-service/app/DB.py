@@ -48,8 +48,6 @@ class Connections:
             Location.creation_time >= start_date
         ).all()
 
-        # Cache all users in memory for quick lookup
-        # person_map: Dict[str, Person] = {person['id']: person for person in PersonService.retrieve_all()}
         person_map: Dict[str, Person] = {str(person.id): {"id" : person.id,
                                                     "first_name" : person.first_name,
                                                     "last_name" : person.last_name,
@@ -57,53 +55,4 @@ class Connections:
                                             for person in session.query(Person)}
         result = person_map
         
-        # log(f"Person map: { person_map }")
-        # log(f"Locations: { locations } ")
-
-
-        # Prepare arguments for queries
-        # data = []
-        # for location in locations:
-        #     data.append(
-        #         {
-        #             "person_id": person_id,
-        #             "longitude": location.longitude,
-        #             "latitude": location.latitude,
-        #             "meters": meters,
-        #             "start_date": start_date.strftime("%Y-%m-%d"),
-        #             "end_date": (end_date + timedelta(days=1)).strftime("%Y-%m-%d"),
-        #         }
-        #     )
-
-        # query = text(
-        # """
-        # SELECT  person_id, id, ST_X(coordinate), ST_Y(coordinate), creation_time
-        # FROM    location
-        # WHERE   ST_DWithin(coordinate::geography,ST_SetSRID(ST_MakePoint(:latitude,:longitude),4326)::geography, :meters)
-        # AND     person_id != :person_id
-        # AND     TO_DATE(:start_date, 'YYYY-MM-DD') <= creation_time
-        # AND     TO_DATE(:end_date, 'YYYY-MM-DD') > creation_time;
-        # """
-        # )
-        # result: List[Dict] = []
-        # for line in tuple(data):
-        #     for (
-        #         exposed_person_id,
-        #         location_id,
-        #         exposed_lat,
-        #         exposed_long,
-        #         exposed_time,
-        #     ) in session.execute(query, line):
-
-        #         locations = { "location_id" : location_id, 
-        #                     "person_id":exposed_person_id, 
-        #                     "time":exposed_time,
-        #                     "lat":exposed_lat,
-        #                     "lon":exposed_long 
-        #         }
-
-                # result.append( {"person": person_map[exposed_person_id], 
-                #                 "locations": locations})
-        
-        # log(result)
         return result

@@ -3,16 +3,15 @@ import psycopg2
 from dotenv import load_dotenv
 from log import log
 from shapely import geometry, wkb
+from models import Location
+from schemas import LocationSchema
 
 from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm.session import Session
 
-# from sqlalchemy.orm.session import sessionmaker
-# from models import Location
-# from schemas import LocationSchema
-# from geoalchemy2.functions import ST_AsText, ST_Point
-# # from sqlalchemy.sql import text
-# from sqlalchemy import create_engine
-# from sqlalchemy.orm import Session, query, sessionmaker
+from geoalchemy2.functions import ST_AsText, ST_Point
+from typing import Dict
 
 load_dotenv()
 
@@ -24,6 +23,8 @@ DB_NAME = os.environ["DB_NAME"]
 
 engine = create_engine(f"postgresql://{DB_USERNAME}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}")
 
+Session = sessionmaker(bind=engine)
+session = Session()
 
 def _db_connect():
     log("GRPC CONNECTING TO DB")
@@ -57,21 +58,20 @@ def getLocById(id=None):
 
     return data
 
-# def save_to_db(location_data):
+def save_to_db(location):
 
-#     log("SAVING LOCATION:")
-#     conn = _db_connect()
-#     cursor = conn.cursor()
-#     # person_id = int(location_data["person_id"])
-#     # latitude = float(location_data["latitude"])
-#     # longitude = float(location_data["longitude"])
-#     person_id = 1 
-#     latitude = "testing Lat" 
-#     longitude = "testing long" 
-#     # sql = "INSERT INTO location (person_id, coordinate) VALUES ({}, ST_Point({}, {}))".format(person_id, latitude, longitude)
-#     # cursor.execute(sql)
-#     conn.commit()
-#     cursor.close()
-#     conn.close()
+    log("SAVING LOCATION:")
 
-#     log("LOCATION SAVED")
+    validation_results: Dict = LocationSchema().validate(location)
+    if validation_results:
+        log(f"Unexpected data format in payload: {validation_results}")
+        raise Exception(f"Invalid payload: {validation_results}")
+
+    new_location = Location()
+    new_location.person_id = location["person_id"]
+    new_location.creation_time = location["creation_time"]
+    new_location.coordinate = ST_Point(location["latitude"], location["longitude"])
+    session.add(new_location)
+    session.commit()
+
+    return new_location

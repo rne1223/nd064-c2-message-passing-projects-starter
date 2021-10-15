@@ -5,7 +5,6 @@ from geoalchemy2.functions import ST_AsText, ST_Point
 
 import grpc
 from shapely import wkb
-from sqlalchemy.engine import create_engine
 import locations_pb2
 import locations_pb2_grpc
 from google.protobuf.timestamp_pb2 import Timestamp
@@ -13,30 +12,9 @@ from google.protobuf.timestamp_pb2 import Timestamp
 from log import log
 import DB
 
-creation_time = datetime.strptime("2020-07-07 10:38:06.00000",'%Y-%m-%d %H:%M:%S.%f')
 tS = Timestamp()
 
 class LocationServicer(locations_pb2_grpc.LocationServiceServicer):
-    # def __init__(self) -> None:
-
-    #     self.result = locations_pb2.LocationMessageList()
-
-    #     first_location = locations_pb2.LocationMessage(
-    #         id = 1,
-    #         person_id = 1,
-    #         longitude = 37.553441,
-    #         latitude = -122.290524,
-    #         creation_time = tS.FromDatetime(creation_time)
-    #     )
-    #     second_location = locations_pb2.LocationMessage(
-    #         id = 2,
-    #         person_id = 2,
-    #         longitude = 37.553441,
-    #         latitude = -122.290524,
-    #         creation_time = tS.FromDatetime(creation_time)
-    #     )
-
-    #     self.result.locations.extend([first_location, second_location])
 
     def Get(self, request, context):
         log("GETTING ALL LOCATIONS FROM DB")
@@ -61,24 +39,19 @@ class LocationServicer(locations_pb2_grpc.LocationServiceServicer):
         return result
 
     def Create(self, request, context):
-        pass
-        # log("Received a message!")
+        log("ADDING A LOCATION TO DB")
+        request_value = {
+            "id" : request.id,
+            "person_id" : request.person_id,
+            "longitude" : request.longitude,
+            "latitude" : request.latitude,
+            "creation_time" : request.creation_time
+        }
 
-        # request_value = {
-        #     "id" : request.id,
-        #     "person_id" : request.person_id,
-        #     "longitude" : request.longitude,
-        #     "latitude" : request.latitude,
-        #     "creation_time" : request.creation_time
-        # }
-        # log(request_value)
+        DB.save_to_db(request_value)
 
-        # # DB.save_to_db(request_value)
-        # location = locations_pb2.LocationMessage(**request_value)
-
-        # self.result.locations.extend([location])
-
-        # return location 
+        location = locations_pb2.LocationMessage(**request_value)
+        return location 
 
     def GetLocation(self, request, context):
         log("GETLOCATION A LOCATION FROM DB")

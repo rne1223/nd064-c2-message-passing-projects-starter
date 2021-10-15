@@ -5,24 +5,9 @@ from app.misc import log
 from google.protobuf.json_format import MessageToDict
 from datetime import datetime
 
-"""
-Sample implementation of a writer that can be used to write messages to gRPC.
-"""
-
 channel = grpc.insecure_channel("udaconnect-location-service:5002")
 stub = locations_pb2_grpc.LocationServiceStub(channel)
 
-def fixTimeStamp(locations):
-
-    fixedLocations = []
-    for loc in locations:
-        dt = datetime.strptime(loc["creationTime"],'%Y-%m-%d %H:%M:%S.%f')
-        loc["creationTime"] = dt
-        fixedLocations.append(loc)
-
-    return fixedLocations 
-
-    
 def _getAllLocations():
     response = stub.Get(locations_pb2.Empty())
     return response
