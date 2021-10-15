@@ -40,6 +40,8 @@ class ConnectionService:
     @staticmethod
     def find_contacts(person_id: int, start_date: datetime, end_date: datetime, meters=5
     ) -> List[Connection]:
+        ''' Find all contacts giving a person_id, an starting and end date, as well as a distance.
+            For the connection service we are using Kafka for communications between services '''
 
         
         log("FINDING CONNECTIONS")
@@ -120,11 +122,13 @@ class ConnectionService:
 class LocationService:
     @staticmethod
     def retrieve_all() -> Location:
+        ''' Retrive all locations using GRPC as the communication method'''
         response = getLocation()
         return response
 
     @staticmethod
     def retrieve(location_id) -> Location:
+        ''' Retrive a single location by id using GRPC as the communication method'''
 
         # using grpc to call the Location service
         location = getLocation(location_id)
@@ -135,19 +139,8 @@ class LocationService:
 
     @staticmethod
     def create(location: Dict) -> Location:
-        # validation_results: Dict = LocationSchema().validate(location)
-        # if validation_results:
-        #     logger.warning(f"Unexpected data format in payload: {validation_results}")
-        #     raise Exception(f"Invalid payload: {validation_results}")
-
-        # new_location = Location()
-        # new_location.person_id = location["person_id"]
-        # new_location.creation_time = location["creation_time"]
-        # new_location.coordinate = ST_Point(location["latitude"], location["longitude"])
-        # db.session.add(new_location)
-        # db.session.commit()
+        ''' Create a new location in DB using GRPC as the communication method'''
         new_location = getLocation(location)
-
         return new_location
 
 
