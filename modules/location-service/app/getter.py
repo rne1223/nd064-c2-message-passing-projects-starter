@@ -12,7 +12,6 @@ stub = locations_pb2_grpc.LocationServiceStub(channel)
 
 
 def _getAllLocations():
-    # log("Getting All Locations from DB")
     response = stub.Get(locations_pb2.Empty())
     return response
 
@@ -22,9 +21,7 @@ def getLocation(lid=None):
 
     if(lid is None):
         response = _getAllLocations() 
-        # log(response)
     else:
-        # log("Getting Unique Location from DB")
         location_id = locations_pb2.UniqueLocationMessage(lid)
         response = stub.GetLocation(location_id)
 

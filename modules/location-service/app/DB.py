@@ -2,7 +2,6 @@ import os
 import psycopg2
 from dotenv import load_dotenv
 from log import log
-from shapely import geometry, wkb
 from models import Location
 from schemas import LocationSchema
 
